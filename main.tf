@@ -11,7 +11,6 @@ data "terraform_remote_state" "vpc" {
 
   config {
     bucket = "terragrunt-priceflow-staging-terraform-state"
-    key    = "vpc/terraform.tfstate"
     region = "us-west-2"
   }
 }
