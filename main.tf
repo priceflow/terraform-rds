@@ -39,12 +39,17 @@ resource "aws_security_group" "default" {
 }
 
 # Create new application DB
+data "aws_db_snapshot" "db_snapshot" {
+  most_recent            = true
+  db_instance_identifier = "koala-app"
+}
+
 resource "aws_db_instance" "db" {
   identifier           = "${var.name}"
   instance_class       = "${var.instance_class}"
   publicly_accessible  = false
   db_subnet_group_name = "${data.terraform_remote_state.vpc.database_subnet_group}"
-  snapshot_identifier  = "arn:aws:rds:us-west-2:230106788096:snapshot:shared-rds"
+  snapshot_identifier  = "${data.aws_db_snapshot.db_snapshot.id}"
 
   vpc_security_group_ids = [
     "${compact(concat(list(aws_security_group.default.id), list(data.terraform_remote_state.vpc.default_security_group_id)))}",
