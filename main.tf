@@ -16,13 +16,6 @@ data "terraform_remote_state" "vpc" {
   }
 }
 
-# Get latest snapshot from production DB
-data "aws_db_snapshot" "db_snapshot" {
-  snapshot_type  = "shared"
-  most_recent    = true
-  include_shared = true
-}
-
 resource "aws_security_group" "default" {
   name        = "${var.name}"
   description = "Allow inbound traffic from the security groups"
@@ -51,7 +44,7 @@ resource "aws_db_instance" "db" {
   instance_class       = "${var.instance_class}"
   publicly_accessible  = false
   db_subnet_group_name = "${data.terraform_remote_state.vpc.database_subnet_group}"
-  snapshot_identifier  = "${data.aws_db_snapshot.db_snapshot.id}"
+  snapshot_identifier  = "arn:aws:rds:us-west-2:230106788096:snapshot:shared-rds"
 
   vpc_security_group_ids = [
     "${compact(concat(list(aws_security_group.default.id), list(data.terraform_remote_state.vpc.default_security_group_id)))}",
