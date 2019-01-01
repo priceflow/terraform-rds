@@ -18,8 +18,9 @@ data "terraform_remote_state" "vpc" {
 
 # Get latest snapshot from production DB
 data "aws_db_snapshot" "db_snapshot" {
-  most_recent            = true
-  db_instance_identifier = "koala-app"
+  snapshot_type  = "shared"
+  most_recent    = true
+  include_shared = true
 }
 
 resource "aws_security_group" "default" {
