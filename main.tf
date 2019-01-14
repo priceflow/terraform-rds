@@ -41,7 +41,7 @@ resource "aws_security_group" "default" {
 # Create new application DB
 data "aws_db_snapshot" "db_snapshot" {
   most_recent            = true
-  db_instance_identifier = "${var.rds_snapshot}"
+  db_snapshot_identifier = "${var.rds_snapshot}"
 }
 
 resource "aws_db_instance" "db" {
