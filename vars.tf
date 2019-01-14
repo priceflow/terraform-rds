@@ -9,6 +9,11 @@ variable "name" {
   default     = ""
 }
 
+variable "rds_snapshot" {
+  description = "Name of the RDS snapshot"
+  default     = ""
+}
+
 variable "instance_class" {
   description = "The instance type of the RDS instance"
   default     = ""

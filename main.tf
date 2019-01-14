@@ -41,7 +41,7 @@ resource "aws_security_group" "default" {
 # Create new application DB
 data "aws_db_snapshot" "db_snapshot" {
   most_recent            = true
-  db_instance_identifier = "koala-app"
+  db_instance_identifier = "${var.rds_snapshot}"
 }
 
 resource "aws_db_instance" "db" {
@@ -52,7 +52,7 @@ resource "aws_db_instance" "db" {
   snapshot_identifier  = "${data.aws_db_snapshot.db_snapshot.id}"
 
   vpc_security_group_ids = [
-    "${compact(concat(list(aws_security_group.default.id), list(data.terraform_remote_state.vpc.default_security_group_id)))}",
+    "${data.terraform_remote_state.vpc.default_security_group_id}",
   ]
 
   storage_encrypted   = true
