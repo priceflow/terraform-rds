@@ -47,7 +47,7 @@ data "aws_db_snapshot" "db_snapshot" {
 resource "aws_db_instance" "db" {
   identifier           = "${var.name}"
   instance_class       = "${var.instance_class}"
-  publicly_accessible  = true3
+  publicly_accessible  = true
   db_subnet_group_name = "${data.terraform_remote_state.vpc.database_subnet_group}"
   snapshot_identifier  = "${data.aws_db_snapshot.db_snapshot.id}"
 
